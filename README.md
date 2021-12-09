@@ -2,7 +2,7 @@
 
 Is a python wrapper for StereoLib by [SeaGIS](https://www.seagis.com.au/stereolib.html)
 
-Allthough this python wrapper is free, StereoLib is not and requires a licence. StereoLib is not, cannot and mustnot be distributed with this Python module.
+Allthough this python wrapper is free, StereoLib is not and requires a licence. StereoLib is not, cannot and must not be distributed with this Python module.
 
 ## How to run the tests
 
