@@ -292,3 +292,82 @@ def epipolarpolar_point(item: int) -> Pt2D:
 
     return pt_image
 
+
+def em_load_data(str_in: str) -> None:
+    """
+    Load an event measure data file to memory
+
+    :param str_in: EventMeasure data file name
+    :return: 
+    """
+    return libc.EMLoadData(bytes(str_in, 'UTF-8'))
+
+
+def em_measurement_count() -> Tuple:
+    """
+    Query the number of measurements present in the currently loaded EventMeasure data
+
+    Use `em_load_data() first`
+    :return: None
+    """
+
+    pn_dot = ctypes.c_int(0)
+    pn_b_box = ctypes.c_int(0)
+    pn_3d_pt = ctypes.c_int(0)
+    pn_length = ctypes.c_int(0)
+    pn_cpd_length = ctypes.c_int(0)
+
+    libc.EMMeasurementCount(ctypes.byref(pn_dot),
+                            ctypes.byref(pn_b_box),
+                            ctypes.byref(pn_3d_pt),
+                            ctypes.byref(pn_length),
+                            ctypes.byref(pn_cpd_length))
+
+    return pn_dot.value, pn_b_box.value, pn_3d_pt.value, pn_length.value, pn_cpd_length.value
+
+
+def em_measurement_count_fgs(p_str_family: str,
+                             p_str_genus: str,
+                             p_str_species: str) -> Tuple:
+    """
+    The number of measurements present in the currently loaded EventMeasure data, for a specified family/genus/species
+    :return:
+    """
+    p_str_family = ctypes.c_char_p(bytes(p_str_family, 'UTF-8'))
+    p_str_genus = ctypes.c_char_p(bytes(p_str_genus, 'UTF-8'))
+    p_str_species = ctypes.c_char_p(bytes(p_str_species, 'UTF-8'))
+
+    pn_dot = ctypes.c_int(0)
+    pn_b_box = ctypes.c_int(0)
+    pn_3d_pt = ctypes.c_int(0)
+    pn_length = ctypes.c_int(0)
+    pn_cpd_length = ctypes.c_int(0)
+
+    libc.EMMeasurementCountFGS(p_str_family,
+                               p_str_genus,
+                               p_str_species,
+                               ctypes.byref(pn_dot),
+                               ctypes.byref(pn_b_box),
+                               ctypes.byref(pn_3d_pt),
+                               ctypes.byref(pn_length),
+                               ctypes.byref(pn_cpd_length))
+
+    return p_str_family.value, p_str_genus.value, p_str_species.value, \
+           pn_dot.value, pn_b_box.value, pn_3d_pt.value, pn_length.value, pn_cpd_length.value
+
+
+def em_to_text(out_file: str) -> bool:
+    """
+    write an EMObs file to text file ('csv').  Comments are denoted with '!'
+
+    :param out_file: The name of the file.
+    :return:
+    """
+
+    out_file = ctypes.c_char_p(bytes(out_file, 'UTF-8'))
+
+    return libc.EMToText(out_file)
+
+
+
+

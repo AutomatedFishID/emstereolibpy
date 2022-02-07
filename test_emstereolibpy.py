@@ -132,6 +132,44 @@ class TestEmstereolibpy(unittest.TestCase):
             new_pt_image = em.epipolarpolar_point(ii)
             print(f"Epipolar Point {ii} : {new_pt_image}")
 
+    def test_em_load_data(self):
+        filename = 'Test.EMObs'
+        self.assertTrue(em.em_load_data(filename))
+
+    def test_em_measurement_count(self):
+        filename = 'Test.EMObs'
+        em.em_load_data(filename)
+        counts = em.em_measurement_count()
+        self.assertTupleEqual(counts, (31, 4, 2, 21, 1))
+        print(f"Found {counts} counts" )
+
+    def test_em_measurement_count_fgs(self):
+        family = "nemipteridae"
+        genus = "*"
+        species = "*"
+
+        fgs_counts = em.em_measurement_count_fgs(family, genus, species)
+
+        print(f"Found {fgs_counts[0:3]} F/G/S counts")
+        print(f"Point ({fgs_counts[3]}) : BBox ({fgs_counts[4]}) : 3D Point ({fgs_counts[5]}) : Length ({fgs_counts[6]}) : "
+              f"Compound Length ({fgs_counts[7]})")
+
+        species = "FURCOSUS"
+        family = "*"
+        # species = "*"
+
+        fgs_counts = em.em_measurement_count_fgs(family, genus, species)
+
+        print(f"Found {fgs_counts[0:3]} F/G/S counts")
+        print(
+            f"Point ({fgs_counts[3]}) : BBox ({fgs_counts[4]}) : 3D Point ({fgs_counts[5]}) : Length ({fgs_counts[6]}) : "
+            f"Compound Length ({fgs_counts[7]})")
+
+    def test_em_to_text(self):
+
+        em.em_load_data('Test.EMObs')
+        em.em_to_text('python_test.csv')
+
 
 if __name__ == '__main__':
     unittest.main()
