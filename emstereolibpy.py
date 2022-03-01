@@ -5,6 +5,7 @@ Requires a licence to use, this is just a python wrapping function
 """
 
 import ctypes
+from ctypes import c_char_p
 from enum import IntEnum, auto
 from typing import Tuple
 
@@ -369,5 +370,47 @@ def em_to_text(out_file: str) -> bool:
     return libc.EMToText(out_file)
 
 
+def em_unique_fgs() -> int:
+    """
+    Use this function to find the number of unique family, genus, species combinations present in all measurements
+    in the currently loaded EventMeasure data.  All measurement types are considered (points, bounding boxes, 3D points
+    and lengths)
+
+    :return:
+    """
+
+    return libc.EMUniqueFGS()
 
 
+def em_get_unique_fgs(n_index: int) -> tuple[c_char_p, c_char_p, c_char_p]:
+    """
+    Before using this function:
+
+    * There must be EventMeasure data loaded using em_load_data()
+    * You must call em_unique_fgs() to discover the number of unique family, genus and species combinations
+
+    :param n_index:
+    :return:
+    """
+
+    p_str_family = " " * BUFF
+    p_str_genus = " " * BUFF
+    p_str_species = " " * BUFF
+    n_index = ctypes.c_int(n_index)
+
+    # p_str_family = ctypes.c_char_p(bytes(p_str_family, 'UTF-8'))
+    # p_str_genus = ctypes.c_char_p(bytes(p_str_genus, 'UTF-8'))
+    # p_str_species = ctypes.c_char_p(bytes(p_str_species, 'UTF-8'))
+
+    p_str_family = ctypes.create_string_buffer(BUFF)
+    p_str_genus = ctypes.create_string_buffer(BUFF)
+    p_str_species = ctypes.create_string_buffer(BUFF)
+
+    success = libc.EMGetUniqueFGS(n_index,
+                                  ctypes.byref(p_str_family), ctypes.byref(p_str_genus), ctypes.byref(p_str_species),
+                                  BUFF)
+
+    if not success:
+        return False
+    else:
+        return p_str_family.value, p_str_genus.value, p_str_species.value

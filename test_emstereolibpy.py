@@ -144,6 +144,9 @@ class TestEmstereolibpy(unittest.TestCase):
         print(f"Found {counts} counts" )
 
     def test_em_measurement_count_fgs(self):
+        filename = 'Test.EMObs'
+        em.em_load_data(filename)
+        counts = em.em_measurement_count()
         family = "nemipteridae"
         genus = "*"
         species = "*"
@@ -169,6 +172,26 @@ class TestEmstereolibpy(unittest.TestCase):
 
         em.em_load_data('Test.EMObs')
         em.em_to_text('python_test.csv')
+
+    def test_em_unique_fgs(self):
+        filename = 'Test.EMObs'
+        em.em_load_data(filename)
+
+        num_fish = em.em_unique_fgs()
+        print(f"Number of unique F/G/S {num_fish}")
+        self.assertEqual(num_fish, 6)
+
+    def test_em_get_unique_fgs(self):
+
+        filename = 'Test.EMObs'
+        em.em_load_data(filename)
+        num_fish = em.em_unique_fgs()
+
+        print(f'Test.EMObs has {num_fish} unique family, genus, species combinations')
+
+        for ii in range(num_fish):
+            ret = em.em_get_unique_fgs(int(ii))
+            print(f" {ii}: {ret[0].decode(encoding='UTF-8')}, {ret[1].decode(encoding='UTF8')}, {ret[2].decode(encoding='UTF-8')}")
 
 
 if __name__ == '__main__':
