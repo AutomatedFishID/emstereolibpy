@@ -393,14 +393,7 @@ def em_get_unique_fgs(n_index: int) -> tuple[c_char_p, c_char_p, c_char_p]:
     :return:
     """
 
-    p_str_family = " " * BUFF
-    p_str_genus = " " * BUFF
-    p_str_species = " " * BUFF
     n_index = ctypes.c_int(n_index)
-
-    # p_str_family = ctypes.c_char_p(bytes(p_str_family, 'UTF-8'))
-    # p_str_genus = ctypes.c_char_p(bytes(p_str_genus, 'UTF-8'))
-    # p_str_species = ctypes.c_char_p(bytes(p_str_species, 'UTF-8'))
 
     p_str_family = ctypes.create_string_buffer(BUFF)
     p_str_genus = ctypes.create_string_buffer(BUFF)
