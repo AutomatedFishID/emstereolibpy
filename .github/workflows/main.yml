@@ -33,9 +33,9 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Install dependencies
         run: |
-          echo Installing dependencies and wasting everyone's time
+          echo Installing dependencies and wasting time
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: Run Pytest
+      - name: Run Pytest and fail
         run: pytest
