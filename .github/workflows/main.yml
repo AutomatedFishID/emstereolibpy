@@ -38,4 +38,4 @@ jobs:
           pip install -r requirements.txt
       
       - name: Run Pytest
-        run: pytest  # This will fail
+        run: pytest
