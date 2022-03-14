@@ -11,7 +11,7 @@ from typing import Tuple
 
 BUFF = 2048
 
-libc = ctypes.CDLL('./libStereoLibLX.so')
+libc = ctypes.CDLL('../libStereoLibLX.so')
 
 
 class CameraID(IntEnum):
@@ -54,6 +54,9 @@ class Pt2D(ctypes.Structure):
     def __str__(self):
         return f"({self.x}, {self.y})"
 
+    def __repr__(self):
+        return f"({self.x}, {self.y})"
+
 
 class Pt3D(ctypes.Structure):
     """
@@ -72,6 +75,9 @@ class Pt3D(ctypes.Structure):
         self.z = z
 
     def __str__(self):
+        return f"({self.x}, {self.y}, {self.z})"
+
+    def __repr__(self):
         return f"({self.x}, {self.y}, {self.z})"
 
 
@@ -97,6 +103,7 @@ def version() -> tuple[int, int]:
 def licence_present() -> bool:
     """
     Checks to see if there is a valid licence present
+
     :return:
     """
     r = libc.LicencePresent()
@@ -117,7 +124,7 @@ def load_camera_file(cam: CameraID, filename: str) -> Result:
 def camera_file(cam: CameraID) -> str:
     """
     Returns the file loaded into memory
-    :param cam:
+    :param cam:  The camera id
     :return:
     """
     p_buff = ctypes.create_string_buffer(b"", BUFF)
@@ -151,7 +158,7 @@ def camera_format(cam: CameraID) -> tuple[int, int]:
 
 def get_units() -> str:
     """
-    return the phycical units of the loaded camera
+    return the physical units of the loaded camera
     :return:
     """
     p_buff = ctypes.create_string_buffer(b"", BUFF)
@@ -269,6 +276,7 @@ def generate_epipolar_line(cam: CameraID, pt_image: Pt2D,
                            n_points: int = 100) -> Result:
     """
     Given a point in one image [left].  Generate an epipolar line in the other [right].
+
     :param cam:
     :param pt_image:
     :param min_range:
