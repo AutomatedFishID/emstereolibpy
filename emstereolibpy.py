@@ -57,6 +57,9 @@ class Pt2D(ctypes.Structure):
     def __repr__(self):
         return f"({self.x}, {self.y})"
 
+    def __add__(self, other):
+        return self.x, self.y, other.x, other.y
+
 
 class Pt3D(ctypes.Structure):
     """
@@ -79,6 +82,9 @@ class Pt3D(ctypes.Structure):
 
     def __repr__(self):
         return f"({self.x}, {self.y}, {self.z})"
+
+    def __add__(self, other):
+        return self.x, self.y, self.z, other.x, other.y, other.z
 
 
 def version() -> tuple[int, int]:
