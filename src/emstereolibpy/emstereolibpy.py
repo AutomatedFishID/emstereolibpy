@@ -11,7 +11,7 @@ from typing import Tuple
 
 BUFF = 2048
 
-libc = ctypes.CDLL('../libStereoLibLX.so')
+libc = ctypes.CDLL('libStereoLibLX.so')
 
 
 class CameraID(IntEnum):
@@ -313,7 +313,7 @@ def em_load_data(str_in: str) -> None:
     Load an event measure data file to memory
 
     :param str_in: EventMeasure data file name
-    :return: 
+    :return:
     """
     return libc.EMLoadData(bytes(str_in, 'UTF-8'))
 
