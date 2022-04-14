@@ -2,3 +2,4 @@ sphinx-automodapi
 pytest
 sphinx-rtd-theme
 sphinx-paramlinks
+build
