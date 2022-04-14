@@ -135,7 +135,7 @@ def camera_file(cam: CameraID) -> str:
     """
     p_buff = ctypes.create_string_buffer(b"", BUFF)
     libc.GetCameraFile(cam, p_buff)
-    return str(p_buff.value)
+    return p_buff.value.decode()
 
 
 def camera_name(cam: CameraID) -> str:
@@ -146,7 +146,7 @@ def camera_name(cam: CameraID) -> str:
     """
     p_buff = ctypes.create_string_buffer(b"", BUFF)
     libc.GetCameraName(cam, p_buff)
-    return str(p_buff.value)
+    return p_buff.value.decode()
 
 
 def camera_format(cam: CameraID) -> tuple[int, int]:
@@ -169,7 +169,7 @@ def get_units() -> str:
     """
     p_buff = ctypes.create_string_buffer(b"", BUFF)
     r = libc.GetUnits(p_buff, BUFF)
-    return p_buff.value
+    return p_buff.value.decode()
 
 
 def set_image_measurement_sd(value: float) -> None:
