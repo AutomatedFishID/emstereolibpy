@@ -40,7 +40,7 @@ class TestEmstereolibpy(unittest.TestCase):
         em.load_camera_file(CameraID.left, 'Left.Cam')
         r = em.get_units()
         print(f"Units are : {r}")
-        self.assertIsInstance(r.decode(), str)
+        self.assertIsInstance(r, str)
 
     def test_set_get_image_measurement_sd(self):
         em.load_camera_file(CameraID.left, 'Left.Cam')
@@ -75,7 +75,8 @@ class TestEmstereolibpy(unittest.TestCase):
         print(f"Intersecting {pt_left} with {pt_right}")
 
         r = em.intersect(pt_left, pt_right)
-        print(f"Intersect at : {r[0]}, with precision :  {r[1]} and rms : {r[2]}")
+        print(
+            f"Intersect at : {r[0]}, with precision :  {r[1]} and rms : {r[2]}")
 
         # Numbers provided by Jim Seager
         self.assertAlmostEqual(r[2], 2.4300, places=4)
