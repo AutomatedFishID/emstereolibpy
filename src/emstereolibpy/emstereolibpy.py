@@ -134,7 +134,7 @@ def camera_file(cam: CameraID) -> str:
     :return:
     """
     p_buff = ctypes.create_string_buffer(b"", BUFF)
-    libc.GetCameraFile(cam, p_buff)
+    libc.GetCameraFile(cam, p_buff, BUFF)
     return p_buff.value.decode()
 
 
@@ -145,7 +145,7 @@ def camera_name(cam: CameraID) -> str:
     :return:
     """
     p_buff = ctypes.create_string_buffer(b"", BUFF)
-    libc.GetCameraName(cam, p_buff)
+    libc.GetCameraName(cam, p_buff, BUFF)
     return p_buff.value.decode()
 
 
