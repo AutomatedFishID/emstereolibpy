@@ -2,3 +2,6 @@ __pycache__/
 dist/
 vp/
 src/emstereolibpy.egg-info/
+*.Cam
+*.EMObs
+python_test.csv

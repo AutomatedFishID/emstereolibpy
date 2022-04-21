@@ -7,7 +7,7 @@ class TestEmstereolibpy(unittest.TestCase):
 
     def test_version(self):
         r = em.version()
-        self.assertTupleEqual(r, (1, 0))
+        self.assertTupleEqual(r, (1, 10))
 
     def test_licence_pressent(self):
         self.assertTrue(True, em.licence_present())
@@ -115,23 +115,46 @@ class TestEmstereolibpy(unittest.TestCase):
         self.assertEqual(mepp, 100)
 
     def test_generate_epipolar_line(self):
+        expected_count = em.max_epipolar_points()
         pt_image = em.Pt2D(262.7, 259.5)
-        em.generate_epipolar_line(CameraID.left, pt_image,
-                                  min_range=2000.0, max_range=8000.0,
-                                  n_points=em.max_epipolar_points())
+        count = em.generate_epipolar_line(CameraID.left, pt_image,
+                                          min_range=2000.0, max_range=8000.0,
+                                          n_points=expected_count)
+        self.assertEqual(count, expected_count)
 
     def test_epipolar_point(self):
         em.load_camera_file(CameraID.left, "Left.Cam")
         em.load_camera_file(CameraID.right, "Right.Cam")
 
         pt_image = em.Pt2D(262.7, 259.5)
-        em.generate_epipolar_line(CameraID.left, pt_image,
-                                  min_range=2000.0, max_range=8000.0,
-                                  n_points=em.max_epipolar_points())
 
-        for ii in range(em.max_epipolar_points()):
-            new_pt_image = em.epipolarpolar_point(ii)
-            print(f"Epipolar Point {ii} : {new_pt_image}")
+        n_points = em.generate_epipolar_line(CameraID.left, pt_image,
+                                  min_range=2000.0, max_range=8000.0,
+                                  n_points=10)
+
+        self.assertEqual(n_points, 10)
+
+        expected_points = [
+            (152.6164, 283.2168),
+            (216.4360, 283.0151),
+            (256.1539, 282.9157),
+            (283.1860, 282.8612),
+            (302.7447, 282.8288),
+            (317.5409, 282.8083),
+            (329.1196, 282.7947),
+            (338.4246, 282.7853),
+            (346.0643, 282.7786),
+            (352.4480, 282.7738)
+        ]
+
+        for ii, (expected_x, expected_y) in enumerate(expected_points):
+            pt_image = em.epipolarpolar_point(ii)
+            self.assertAlmostEqual(
+                pt_image.x, expected_x, places=4
+            )
+            self.assertAlmostEqual(
+                pt_image.y, expected_y, places=4
+            )
 
     def test_em_load_data(self):
         filename = 'Test.EMObs'
