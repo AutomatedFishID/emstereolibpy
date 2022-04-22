@@ -1,7 +1,11 @@
 import unittest
 import emstereolibpy as em
+import os
+import csv
 from emstereolibpy import CameraID, Result
 
+SRC_DIR = os.path.abspath(os.path.dirname(__file__))
+TEST_FILES_PATH = os.path.join(SRC_DIR, 'test_files')
 
 class TestEmstereolibpy(unittest.TestCase):
 
@@ -130,31 +134,22 @@ class TestEmstereolibpy(unittest.TestCase):
 
         n_points = em.generate_epipolar_line(CameraID.left, pt_image,
                                   min_range=2000.0, max_range=8000.0,
-                                  n_points=10)
+                                  n_points=100)
 
-        self.assertEqual(n_points, 10)
+        self.assertEqual(n_points, 100)
 
-        expected_points = [
-            (152.6164, 283.2168),
-            (216.4360, 283.0151),
-            (256.1539, 282.9157),
-            (283.1860, 282.8612),
-            (302.7447, 282.8288),
-            (317.5409, 282.8083),
-            (329.1196, 282.7947),
-            (338.4246, 282.7853),
-            (346.0643, 282.7786),
-            (352.4480, 282.7738)
-        ]
+        with open(os.path.join(TEST_FILES_PATH, 'epipolar_points.csv'), 'r') as f:
+            reader = csv.reader(f)
+            parsed_reader = ((float(x), float(y)) for x, y in reader)
 
-        for ii, (expected_x, expected_y) in enumerate(expected_points):
-            pt_image = em.epipolarpolar_point(ii)
-            self.assertAlmostEqual(
-                pt_image.x, expected_x, places=4
-            )
-            self.assertAlmostEqual(
-                pt_image.y, expected_y, places=4
-            )
+            for ii, (expected_x, expected_y) in enumerate(parsed_reader):
+                pt_image = em.epipolarpolar_point(ii)
+                self.assertAlmostEqual(
+                    pt_image.x, expected_x, places=4
+                )
+                self.assertAlmostEqual(
+                    pt_image.y, expected_y, places=4
+                )
 
     def test_em_load_data(self):
         filename = 'Test.EMObs'
