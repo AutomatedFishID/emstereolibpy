@@ -288,11 +288,13 @@ def generate_epipolar_line(cam: CameraID, pt_image: Pt2D,
     :param min_range:
     :param max_range:
     :param n_points:
-    :return:
+    :return: The number of points generated
     """
-    r = libc.GenerateEpipolarLine(cam.left, pt_image,
-                                  ctypes.c_double(min_range), ctypes.c_double(max_range),
-                                  ctypes.c_int(n_points))
+    n_points = ctypes.c_int(n_points)
+    r = libc.EpipolarLine(cam, pt_image,
+                          ctypes.c_double(min_range), ctypes.c_double(max_range),
+                          ctypes.byref(n_points))
+    return n_points.value
 
 
 def epipolarpolar_point(item: int) -> Pt2D:
